@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/AuctionHouseWeb/static/css/main.c2d00b67.chunk.css",
-    "main.js": "/AuctionHouseWeb/static/js/main.f0e7aa56.chunk.js",
-    "main.js.map": "/AuctionHouseWeb/static/js/main.f0e7aa56.chunk.js.map",
-    "runtime-main.js": "/AuctionHouseWeb/static/js/runtime-main.e658df46.js",
-    "runtime-main.js.map": "/AuctionHouseWeb/static/js/runtime-main.e658df46.js.map",
-    "static/js/2.8dcef961.chunk.js": "/AuctionHouseWeb/static/js/2.8dcef961.chunk.js",
-    "static/js/2.8dcef961.chunk.js.map": "/AuctionHouseWeb/static/js/2.8dcef961.chunk.js.map",
-    "static/js/3.f9dd3874.chunk.js": "/AuctionHouseWeb/static/js/3.f9dd3874.chunk.js",
-    "static/js/3.f9dd3874.chunk.js.map": "/AuctionHouseWeb/static/js/3.f9dd3874.chunk.js.map",
+    "main.css": "/AuctionHouseWeb/static/css/main.7cec9e41.chunk.css",
+    "main.js": "/AuctionHouseWeb/static/js/main.200e208e.chunk.js",
+    "main.js.map": "/AuctionHouseWeb/static/js/main.200e208e.chunk.js.map",
+    "runtime-main.js": "/AuctionHouseWeb/static/js/runtime-main.504069af.js",
+    "runtime-main.js.map": "/AuctionHouseWeb/static/js/runtime-main.504069af.js.map",
+    "static/js/2.03e75315.chunk.js": "/AuctionHouseWeb/static/js/2.03e75315.chunk.js",
+    "static/js/2.03e75315.chunk.js.map": "/AuctionHouseWeb/static/js/2.03e75315.chunk.js.map",
+    "static/js/3.688a5512.chunk.js": "/AuctionHouseWeb/static/js/3.688a5512.chunk.js",
+    "static/js/3.688a5512.chunk.js.map": "/AuctionHouseWeb/static/js/3.688a5512.chunk.js.map",
     "index.html": "/AuctionHouseWeb/index.html",
-    "static/css/main.c2d00b67.chunk.css.map": "/AuctionHouseWeb/static/css/main.c2d00b67.chunk.css.map",
-    "static/js/2.8dcef961.chunk.js.LICENSE.txt": "/AuctionHouseWeb/static/js/2.8dcef961.chunk.js.LICENSE.txt",
+    "static/css/main.7cec9e41.chunk.css.map": "/AuctionHouseWeb/static/css/main.7cec9e41.chunk.css.map",
+    "static/js/2.03e75315.chunk.js.LICENSE.txt": "/AuctionHouseWeb/static/js/2.03e75315.chunk.js.LICENSE.txt",
     "static/media/App.css": "/AuctionHouseWeb/static/media/minecrafter.4e28fd07.ttf"
   },
   "entrypoints": [
-    "static/js/runtime-main.e658df46.js",
-    "static/js/2.8dcef961.chunk.js",
-    "static/css/main.c2d00b67.chunk.css",
-    "static/js/main.f0e7aa56.chunk.js"
+    "static/js/runtime-main.504069af.js",
+    "static/js/2.03e75315.chunk.js",
+    "static/css/main.7cec9e41.chunk.css",
+    "static/js/main.200e208e.chunk.js"
   ]
 }
