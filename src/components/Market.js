@@ -1,11 +1,11 @@
-import { useCallback, useEffect, useState } from "react";
-const mcAssets = require("minecraft-assets")("1.16.4");
+import { useEffect, useState } from "react";
+import textures from "../texturesBase64.js";
 
 function Item(props) {
-    const lcEnum = props.item.toLowerCase();
+    const lcEnum = props.item.toLowerCase().replace("_wood", "_log").replace("iron_fence", "iron_bars");
     return (
         <div className="mc-item" onClick={() => props.selectItem(lcEnum)}>
-            <div className="item-icon"><img alt={props.item} src={mcAssets.textureContent[lcEnum].texture} /></div>
+            <div className="item-icon"><img alt={props.item} src={textures[lcEnum]} /></div>
             <div className="item-info">
                 <div className="item-listings">{props.listings}</div>
                 <div className="item-min-price">{props.minPrice} z</div>
@@ -19,70 +19,72 @@ function Listing(props) {
         <tr className="listing">
             <td className="seller-face"><img alt="?" src={`https://minotar.net/avatar/${props.uuid}/32`} />{props.name}</td>
             <td className="item-count">{props.count}</td>
-            <td className="price">{props.price}</td>
+            <td className="price">{props.price}z</td>
+            <td className="total">{(props.price * props.count).toFixed(2)}z</td>
         </tr>
     )
 }
 
 export default function Market() {
 
-    const [listings, setListings] = useState([]);
-    const [itemsWithListings, setItemsWithListings] = useState([]);
+    const [listings, setListings] = useState(null);
+    const [itemsWithListings, setItemsWithListings] = useState(null);
     const [currentItem, setCurrentItem] = useState(null);
 
-    const updateItemsWithListings = useCallback(async () => {
-        try {
-            const resp = await fetch("https://market.forgottenworld.it/api/listing/list");
-            setItemsWithListings(await resp.json());
-        } catch (e) {
-            console.log(e);
-        }
+    useEffect(() => {
+        (async () => {
+            try {
+                const resp = await fetch("https://market.forgottenworld.it/api/listing/list");
+                setItemsWithListings(await resp.json());
+            } catch (e) {
+                console.log(e);
+            }
+        })()
     }, []);
 
-    const updateListings = useCallback(async () => {
+    useEffect(() => {
         if (currentItem === null) {
-            setListings([]);
+            if (listings !== null) setListings(null);
             return;
         }
-        try {
+        (async () => {try {
             const resp = await fetch(`https://market.forgottenworld.it/api/listing/listByEnum/${currentItem}`);
             setListings(await resp.json());
         } catch (e) {
             console.log(e);
-        }
-    }, [currentItem]);
-
-    useEffect(() => updateItemsWithListings(), [updateItemsWithListings]);
-
-    useEffect(() => updateListings(), [updateListings, currentItem]);
+        }})()
+    }, [currentItem, listings]);
 
     return (
         <div className="page market">
             <div className="title">MERCATO INTERNAZIONALE</div>
             <div className="market-inner">
                 {
-                    listings.length !== 0
+                    listings || itemsWithListings
+                    ? listings && listings.length !== 0
                         ? <table className="listings">
                             <tr className="listings-header listing">
                                 <th className="seller-face">Venditore</th>
                                 <th className="item-count">Quantità</th>
-                                <th className="price">Totale</th>
+                                <th className="price">Prezzo</th>
+                                <th className="total">Totale</th>
                             </tr>
                             <tbody>
                             {listings.map(item => <Listing 
                                 uuid={item.sellerUuid} 
                                 name={item.sellerNickname} 
                                 count={item.amount} 
-                                price={(item.unitPrice * item.amount).toFixed(2)} />)}
+                                price={item.unitPrice.toFixed(2)} />)}
                             </tbody>
                         </table>
                         : <div className="items-list">
                             {itemsWithListings.map(item => <Item 
                                 item={item.minecraftEnum} 
-                                listings={item.totalCount} 
+                                listings={item.totalCount}
                                 minPrice={parseFloat(item.minUnitPrice).toFixed(2)}
                                 selectItem={setCurrentItem} />)}
                         </div>
+                    : <span>Caricamento...</span>
                 }
             </div>
         </div>
