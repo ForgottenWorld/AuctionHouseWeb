@@ -2,8 +2,9 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import './App.css';
-import HomeLink from './components/HomeLink';
 import Market from './components/Market';
+import Navbar from './components/Navbar';
+import Home from './components/Home';
 
 function App() {
 
@@ -17,7 +18,7 @@ function App() {
     setTimeout(() => {
       setCurrentPage(0);
       setPreviousPage(null);
-    }, 400);
+    }, 600);
   }
 
   const navigateToPage = (pageIndex) => {
@@ -25,41 +26,31 @@ function App() {
     setTimeout(() => {
       setCurrentPage(pageIndex);
       setNextPage(null);
-    }, 400);
+    }, 600);
   }
 
   const pages = [
-    <div className="page page-home">
-      <HomeLink clickAction={() => navigateToPage(1)} />
-    </div>,
+    <Home />,
     <Market />
   ]
 
   return (
     <div className="app">
-      <div className="app-header ">
+      <Navbar navigate={navigateToPage} />
+      <div className="page-container">
         {
-          currentPage !== 0 && previousPage !== 0
-          ? <div className="back-button" onClick={() => navigateUp()}><FontAwesomeIcon icon={faArrowLeft} /></div>
+          previousPage != null
+          ? <div className="page-slidable sliding-in-top">{pages[previousPage]}</div>
           : null
         }
-      </div>
-      <div className="app-body">
-        <div className="page-container">
-          {
-            previousPage != null
-            ? <div className="page-slidable sliding-in-left">{pages[previousPage]}</div>
-            : null
-          }
-          <div className={`page-slidable ${nextPage != null ? "sliding-out-left" : ""} ${previousPage != null ? "sliding-out-right" : ""}`}>
-            {pages[currentPage]}
-          </div>
-          {
-            nextPage != null
-            ? <div className="page-slidable sliding-in-right">{pages[nextPage]}</div>
-            : null
-          }
+        <div className={`page-slidable ${nextPage != null ? "sliding-out-top" : ""} ${previousPage != null ? "sliding-out-bottom" : ""}`}>
+          {pages[currentPage]}
         </div>
+        {
+          nextPage != null
+          ? <div className="page-slidable sliding-in-bottom">{pages[nextPage]}</div>
+          : null
+        }
       </div>
     </div>
   );
