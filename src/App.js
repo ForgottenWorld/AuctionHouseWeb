@@ -1,5 +1,3 @@
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useState } from 'react';
 import './App.css';
 import Market from './components/Market';
@@ -12,20 +10,23 @@ function App() {
   const [nextPage, setNextPage] = useState(null);
   const [currentPage, setCurrentPage] = useState(0);
 
-  const navigateUp = () => {
-    if (currentPage === 0 || previousPage === 0) return;
-    setPreviousPage(0);
-    setTimeout(() => {
-      setCurrentPage(0);
-      setPreviousPage(null);
-    }, 600);
-  }
-
   const navigateToPage = (pageIndex) => {
-    setNextPage(pageIndex);
+    if (pageIndex === currentPage) return
+    const fromBottom = pageIndex > currentPage
+
+    if (fromBottom)
+      setNextPage(pageIndex);
+    else
+      setPreviousPage(pageIndex);
+
     setTimeout(() => {
       setCurrentPage(pageIndex);
-      setNextPage(null);
+
+      if (fromBottom)
+        setNextPage(null);
+      else
+        setPreviousPage(null);
+        
     }, 600);
   }
 

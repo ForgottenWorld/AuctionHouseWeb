@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap');
 
 :root {
-  --bg-color: #d0d0d0;
   --orange-hl: #ffc400;
 }
 
@@ -12,7 +11,7 @@
 
 @keyframes slideInTop {
   0% {
-    margin-top: -100vh;
+    margin-top: calc(-100vh + 64px);
   }
 
   100% {
@@ -26,13 +25,13 @@
   }
 
   100% {
-    margin-top: -100vh;
+    margin-top: calc(-100vh + 64px);
   }
 }
 
 @keyframes slideInBottom {
   0% {
-    margin-bottom: -100vh;
+    margin-bottom: calc(-100vh + 64px);
   }
 
   100% {
@@ -46,7 +45,7 @@
   }
 
   100% {
-    margin-bottom: -100vh;
+    margin-bottom: calc(-100vh + 64px);
   }
 }
 
@@ -87,17 +86,23 @@
 }
 
 #root {
+  background: linear-gradient(0, #101010, #202020);
+  padding: 32px;
+  box-sizing: border-box;
   overflow: hidden;
   display: flex;
 }
 
 .app {
+  border-radius: 8px;
   display: flex;
+  overflow: hidden;
   flex: 1 1 100%;
-  height: 100vh;
+  height: calc(100vh - 64px);
   font-family: Montserrat;
   font-weight: 400;
   box-sizing: border-box;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.4);
 }
 
 .page-container {
@@ -108,19 +113,22 @@
 
 .page-slidable {
   display: flex;
-  height: 100vh;
+  height: 100%;
   justify-content: center;
 }
 
 .page {
   display: flex;
+  max-height: 100%;
+  padding-bottom: 32px;
   flex-direction: column;
   padding: 0 32px;
 }
 
 .navbar {
-  background: linear-gradient(0, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%), url(images/stone_bricks.png) repeat;
+  background: linear-gradient(0, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.7) 100%), url(images/light_blue_wool.png) repeat;
   background-size: 48px;
+  image-rendering: pixelated;
   image-rendering: crisp-edges;
   font-family: Minecrafter;
   display: flex;
@@ -129,14 +137,14 @@
   text-shadow: 0 1px 2px black;
   color: whitesmoke;
   text-align: end;
-  padding: 0 16px 0 16px;
+  padding: 0 0 0 16px;
   align-items: stretch;
   box-sizing: border-box;
 }
 
 .homelink {
-  background-image: url(./images/bg3.jpg);
-  background-position: center;
+  background: url(images/light_blue_wool.png) repeat;
+  background-size: 48px;
   height: 120px;
   width: 360px;
   position: relative;
@@ -148,9 +156,9 @@
   cursor: pointer;
   margin-top: 16px;
   margin-bottom: 16px;
-  border-radius: 8px;
-  padding: 16px;
-  box-shadow: inset 0 0 0 4px rgba(255,255,255,0.1), 0 2px 4px 2px rgba(0,0,0,0.4);
+  border-radius: 8px 0 0 8px;
+  padding: 16px 32px 16px 16px;
+  box-shadow: 0 2px 4px 2px rgba(0,0,0,0.4);
   transition: ease-in box-shadow 100ms, ease-in margin-bottom 100ms, ease-in margin-top 100ms;
 }
 
@@ -185,9 +193,11 @@
 
 .market {
   flex-direction: column;
-  background: linear-gradient(45deg, rgba(252, 136, 4, 0.3) 30%, transparent 100%), url(./images/bg3.jpg) center;
-  background-size: cover;
-  box-shadow: inset 0 0 0 4px rgba(255,255,255,0.1), -2px 0 4px 0 rgba(0,0,0,0.4);
+  background: linear-gradient(45deg, rgba(0, 0, 0, 0.75) 30%, rgba(0, 0, 0, 0) 100%), url(images/light_blue_wool.png) repeat;
+  background-size: 48px;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  box-shadow: -2px 0 4px 0 rgba(0,0,0,0.4);
   box-sizing: border-box;
   padding-bottom: 32px;
 }
@@ -206,7 +216,7 @@
   background-color: rgba(0,0,0,0.75);
   display: flex;
   flex-direction: column;
-  flex: 1 1 auto;
+  flex: 0 1 100%;
   box-shadow: inset 0 0 8px 0 rgba(0,0,0,0.4);
   overflow: hidden;
 }
@@ -277,6 +287,7 @@
 .item-icon > img {
   width: 64px;
   height: 64px;
+  image-rendering: pixelated;
   image-rendering: crisp-edges;
 }
 
@@ -320,11 +331,11 @@
 }
 
 .listings {
-  margin-top: 32px;
   display: flex;
   flex-direction: column;
   width: 100%;
   overflow: hidden;
+  animation: fadeIn 200ms linear;
 }
 
 .listings tbody {
@@ -350,7 +361,6 @@
   position: sticky;
   top: 0;
   background-color: rgba(255,255,255,0.3);
-  border-radius: 8px 8px 0 0;
   box-shadow: 0 2px 4px 0 rgba(0,0,0,0.2);
 }
 
@@ -359,14 +369,6 @@
   box-sizing: border-box;
   transition: background-color 200ms linear;
   cursor: pointer;
-}
-
-.listings-header th:first-child {
-  border-radius: 8px 0 0 0;
-}
-
-.listings-header th:last-child {
-  border-radius: 0 8px 0 0;
 }
 
 .listings-header th:hover {
@@ -394,6 +396,9 @@
 .listing > .seller-face > img {
   border-radius: 4px;
   margin-right: 16px;
+  width: 32px;
+  height: 32px;
+  background-image: url(images/face_pholder.png);
   box-shadow: 0 0 0 3px rgba(255,255,255,0.8), 0 0 2px 0 rgba(0,0,0,0.4);
 }
 
@@ -419,13 +424,16 @@
 
 .search-container {
   display: flex;
+  background-color: rgba(255,255,255,0.05);
 }
 
 .search-bar {
   display: flex;
   position: relative;
   width: 100%;
-  padding: 32px 32px 0 32px;
+  padding: 32px;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.4);
+  z-index: 10;
 }
 
 .search-bar-input {
@@ -452,11 +460,109 @@
   right: 48px;
   font-size: 48px;
   top: 32px;
-  color: rgba(255,255,255,0.4);
+  color: rgba(255,255,255,0.75);
   transition: color 200ms linear;
   cursor: pointer;
 }
 
 .mkt-back-button:hover {
   color: rgba(255,255,255,0.9);
+}
+
+.mkt-username-prompt {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1 1 100%;
+  animation: fadeIn 200ms linear;
+}
+
+.mkt-username-prompt-inner {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(255,255,255,0.1);
+  padding: 32px;
+  text-align: center;
+  max-width: 360px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.4);
+}
+
+.mkt-username-prompt-info {
+  padding-bottom: 32px;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
+.mkt-username-prompt-price {
+  font-size: 1.4rem;
+  color: lightblue
+}
+
+.mkt-username-prompt-price > .price-value {
+  font-weight: 600;
+  color: wheat;
+}
+
+.mkt-username-promp-input {
+  appearance: none;
+  border: none;
+  height: 48px;
+  border-radius: 8px;
+  padding: 0 16px;
+  margin-top: 32px;
+  box-shadow: inset 0 0 4px 0 rgba(0,0,0,0.4);
+  font-family: Montserrat;
+}
+
+.mkt-username-send, .mkt-username-cancel {
+  cursor: pointer;
+  appearance: none;
+  border: none;
+  height: 48px;
+  margin-top: 32px;
+  margin-bottom: 0;
+  padding: 0;
+  border-radius: 8px;
+  font-weight: 600;
+  font-family: Montserrat;
+  color: white;
+  transition: background-color 200ms linear, margin-top 100ms linear, margin-bottom 100ms linear;
+}
+
+.mkt-username-send {
+  background-color: dodgerblue;
+}
+
+.mkt-username-cancel {
+  background-color:  rgb(224, 40, 40);
+}
+
+.mkt-username-send:not(:disabled):hover, .mkt-username-cancel:not(:disabled):hover {
+  margin-top: 28px;
+  margin-bottom: 4px;
+}
+
+.mkt-username-send:not(:disabled):hover {
+  background-color: rgb(96, 167, 238);
+}
+
+.mkt-username-cancel:not(:disabled):hover {
+  background-color:  rgb(226, 80, 80);
+}
+
+.mkt-username-prompt-error {
+  padding-top: 32px;
+  font-weight: 400;
+  color: red;
+}
+
+.mkt-username-send:disabled {
+  background: gray;
+  cursor: default;
+}
+
+.hidden {
+  display: none;
 }
