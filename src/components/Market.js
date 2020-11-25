@@ -54,16 +54,18 @@ function UsernamePrompt(props) {
 
 function Item(props) {
     const item = props.item;
-    const textureEnum = item.minecraftEnum.toLowerCase().replace("_wood", "_log").replace("iron_fence", "iron_bars");
-    const visible = props.needle.every(t => textureEnum.includes(t))
+    const textureEnum = item.minecraftEnum.toLowerCase();
+    const visible = props.needle.every(t => textureEnum.includes(t));
     return (
-        <div className={`mc-item ${!visible ? "hidden" : ""}`} onClick={() => props.selectItem(item.minecraftEnum)}>
+        visible
+        ? <div className="mc-item" onClick={() => props.selectItem(item.minecraftEnum)}>
             <div className="item-icon"><img alt={item.minecraftEnum} src={textures[textureEnum]} /></div>
             <div className="item-info">
                 <div className="item-listings">{item.totalCount}</div>
                 <div className="item-min-price">{parseFloat(item.minUnitPrice).toFixed(2)}z</div>
             </div>
         </div>
+        : null
     )
 }
 
@@ -72,12 +74,14 @@ function Listing(props) {
     const lcName = item.sellerNickname.toLowerCase();
     const visible = props.needle.every(t => lcName.includes(t));
     return (
-        <tr className={`listing ${!visible ? "hidden" : ""}`} onClick={() => props.setBuyingItem(item)}>
+        visible
+        ? <tr className="listing" onClick={() => props.setBuyingItem(item)}>
             <td className="seller-face"><img alt="" src={`https://minotar.net/avatar/${item.sellerUuid}/32`} />{item.sellerNickname}</td>
             <td className="item-count">{item.amount}</td>
             <td className="price">{item.unitPrice.toFixed(2)}z</td>
             <td className="total">{(item.unitPrice * item.amount).toFixed(2)}z</td>
         </tr>
+        : null
     )
 }
 
