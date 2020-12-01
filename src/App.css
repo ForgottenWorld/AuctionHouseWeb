@@ -126,7 +126,7 @@
 }
 
 .navbar {
-  background: linear-gradient(0, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.7) 100%), url(images/light_blue_wool.png) repeat;
+  background: linear-gradient(45deg, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0) 100%), url(images/oak_planks.png) repeat;
   background-size: 48px;
   image-rendering: pixelated;
   image-rendering: crisp-edges;
@@ -140,16 +140,17 @@
   padding: 0 0 0 16px;
   align-items: stretch;
   box-sizing: border-box;
+  transition: background-image 600ms linear;
+  position: relative;
 }
 
-.homelink {
-  background: url(images/light_blue_wool.png) repeat;
-  background-size: 48px;
+.navlink {
   height: 120px;
   width: 360px;
   position: relative;
   background-color: white;
   display: flex;
+  z-index: 5;
   justify-content: flex-end;
   align-items: flex-end;
   box-sizing: border-box;
@@ -158,11 +159,11 @@
   margin-bottom: 16px;
   border-radius: 8px 0 0 8px;
   padding: 16px 32px 16px 16px;
-  box-shadow: 0 2px 4px 2px rgba(0,0,0,0.4);
+  box-shadow: 0 4px 4px 0px rgba(0,0,0,0.5);
   transition: ease-in box-shadow 100ms, ease-in margin-bottom 100ms, ease-in margin-top 100ms;
 }
 
-.homelink::before {
+.navlink::before {
   content: "";
   top: 0;
   left: 0;
@@ -170,34 +171,50 @@
   display: block;
   width: 100%;
   height: 100%;
-  background-color: rgba(255,255,255,0);
+  border-radius: inherit;
+  background-color: transparent;
   transition: ease-in background-color 100ms;
 }
 
-.homelink:hover {
+.navlink:hover {
   margin-top: 12px;
   margin-bottom: 20px;
-  box-shadow: inset 0 0 0 4px rgba(255,255,255,0.1), 0 8px 8px 0 rgba(0,0,0,0.2);
+  box-shadow: 0 8px 4px 0 rgba(0,0,0,0.5);
 }
 
-.homelink:hover::before {
+.navlink:hover::before {
   background-color: rgba(255,255,255,0.1)
+}
+
+.homelink {
+  background: url(images/green_wool.png) repeat;
+  background-size: 48px;
+}
+
+.marketlink {
+  background: url(images/light_blue_wool.png) repeat;
+  background-size: 48px;
 }
 
 .page {
   display: flex;
   width: 100%;
-  background-color: red;
+  z-index: 10;
   position: relative;
+  box-shadow: inset 4px 0 0 -2px rgba(255,255,255,0.1), -2px 0 4px 0 rgba(0,0,0,0.4);
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
 }
 
-.market {
+.page.home {
+  background: linear-gradient(45deg, rgba(0, 0, 0, 0.75) 30%, rgba(0, 0, 0, 0) 100%), url(images/green_wool.png) repeat;
+  background-size: 48px;
+}
+
+.page.market {
   flex-direction: column;
   background: linear-gradient(45deg, rgba(0, 0, 0, 0.75) 30%, rgba(0, 0, 0, 0) 100%), url(images/light_blue_wool.png) repeat;
   background-size: 48px;
-  image-rendering: pixelated;
-  image-rendering: crisp-edges;
-  box-shadow: -2px 0 4px 0 rgba(0,0,0,0.4);
   box-sizing: border-box;
   padding-bottom: 32px;
 }
@@ -243,7 +260,7 @@
   flex-direction: column;
   flex: 1 0 160px;
   border-radius: 8px;
-  background-color: rgba(255,255,255,0.75);
+  background-color: rgba(255,255,255,0.3);
   margin: 16px;
   margin-top: 16px;
   cursor: pointer;
@@ -251,7 +268,7 @@
   margin-bottom: 16px;
   opacity: 1;
   animation: fadeIn 200ms ease-in;
-  box-shadow: inset 0 0 0 4px rgba(255,255,255,0.1), 0 4px 4px 0 rgba(0,0,0,0.2);
+  box-shadow: 0 4px 4px 0 rgba(0,0,0,0.2);
   transition: ease-in box-shadow 100ms, ease-in margin-bottom 100ms, ease-in margin-top 100ms;
 }
 
@@ -271,7 +288,7 @@
 .mc-item:hover {
   margin-top: 10px;
   margin-bottom: 22px;
-  box-shadow: inset 0 0 0 4px rgba(255,255,255,0.1), 0 8px 8px 0 rgba(0,0,0,0.2);
+  box-shadow: 0 8px 8px 0 rgba(0,0,0,0.2);
 }
 
 .mc-item:hover::before {
@@ -495,16 +512,6 @@
   font-weight: 400;
 }
 
-.mkt-username-prompt-price {
-  font-size: 1.4rem;
-  color: lightblue
-}
-
-.mkt-username-prompt-price > .price-value {
-  font-weight: 600;
-  color: wheat;
-}
-
 .mkt-username-promp-input {
   appearance: none;
   border: none;
@@ -565,4 +572,70 @@
 
 .hidden {
   display: none;
+}
+
+.mkt-purchase-confirmation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1 1 100%;
+  animation: fadeIn 200ms linear;
+}
+
+.mkt-purchase-confirmation-inner {
+  display: flex;
+  flex-direction: column;
+  background-color: rgba(255,255,255,0.1);
+  padding: 32px;
+  text-align: center;
+  max-width: 360px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,0.4);
+}
+
+.mkt-purchase-confirmation-message {
+
+  padding-bottom: 32px;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 400;
+}
+
+.mkt-purchase-confirmation-price {
+    font-size: 1.4rem;
+    color: lightblue
+  }
+  
+.mkt-purchase-confirmation-price > .price-value {
+  font-weight: 600;
+  color: wheat;
+}
+
+.mkt-purchase-confirmation-error {
+  padding-top: 32px;
+  font-weight: 400;
+  color: red;
+}
+
+.mkt-session-username {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 32px;
+  left: 32px;
+  font-weight: 500;
+  font-size: 1.2rem;
+  color: white;
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.5);
+  padding: 16px;
+  border-radius: 8px;
+  box-shadow: inset 0 0 4px 0 rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.7)
+}
+
+.mkt-session-face {
+  margin-right: 16px;
+  border-radius: 4px;;
+  background-image: url(images/face_pholder.png);
+  box-shadow: 0 0 0 2px rgba(255,255,255,0.9), 0 0 2px 0 rgba(0,0,0,0.4);
 }

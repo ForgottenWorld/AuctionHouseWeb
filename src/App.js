@@ -37,7 +37,7 @@ function App() {
 
   return (
     <div className="app">
-      <Navbar navigate={navigateToPage} />
+      <Navbar currentlyOn={currentPage} navigate={navigateToPage} />
       <div className="page-container">
         {
           previousPage != null
