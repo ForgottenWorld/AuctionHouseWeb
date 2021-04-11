@@ -6,6 +6,7 @@ import { PurchaseConfirmation } from "./PurchaseConfirmation";
 import { UsernamePrompt } from "./UsernamePrompt";
 import { Item } from "./Item";
 import { Listing } from "./Listing";
+import logo from '../images/logo.png';
 
 export default function Market() {
 
@@ -33,8 +34,9 @@ export default function Market() {
                 setUsername(parsed.error.match(/^The token is valid for the user (.*)$/)[1]);
                 setIsValidated(true);
                 localStorage.setItem("mkt_mc_token", token);
+            } else {
+                setTimeout(() => setValidationAttempts(validationAttempts + 1), 5000);
             }
-            else setTimeout(() => setValidationAttempts(validationAttempts + 1), 5000);
         })();
     }, [token, isValidated, setIsValidated, validationAttempts, setValidationAttempts]);
 
@@ -105,19 +107,21 @@ export default function Market() {
 
     return (
         <div className="page market">
-            {
-                isValidated
-                    ? <div className="mkt-session-username">
-                        <img className="mkt-session-face" alt="" src={`https://minotar.net/avatar/${username}/32`}></img>{username}
-                    </div>
-                    : null
-            }
-            <div className="title">Mercato internazionale</div>
-            {
-                currentItem
-                    ? <FontAwesomeIcon className="mkt-back-button" icon={faArrowCircleLeft} onClick={() => setCurrentItem(null)} />
-                    : null
-            }
+            <div className="page-header">
+                {
+                    isValidated
+                        ? <div className="mkt-session-username">
+                            <img className="mkt-session-face" alt="" src={`https://minotar.net/avatar/${username}/32`}></img>{username}
+                        </div>
+                        : null
+                }
+                <img src={logo} className="logo" />
+                {
+                    currentItem
+                        ? <FontAwesomeIcon className="mkt-back-button" icon={faArrowCircleLeft} onClick={() => setCurrentItem(null)} />
+                        : <div className="mkt-back-button-pholder"></div>
+                }
+            </div>
             {
                 isValidated
                     ? <div className="market-inner">
