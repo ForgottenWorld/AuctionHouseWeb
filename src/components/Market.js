@@ -1,135 +1,11 @@
 import { useEffect, useState } from "react";
-import textures from "../texturesBase64.js";
 import "../Loader.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowCircleLeft, faSearch } from "@fortawesome/free-solid-svg-icons";
-
-function PurchaseConfirmation(props) {
-
-    const item = props.item;
-    const [error, setError] = useState(null);
-
-    const placeOrder = async () => {
-        try {
-            const resp = await fetch(`https://market.forgottenworld.it/api/listing/placeOrder/${item.id}/${props.token}`);
-            const parsed = await resp.json();
-            const status = parsed.status;
-            switch (parseInt(status)) {
-                case 1:
-                    props.cancel();
-                    break;
-                default:
-                    setError(parsed.error);
-                    break;
-            }
-        } catch (e) {
-            console.log(e);
-        }
-    }
-
-    return (
-        <div className="mkt-purchase-confirmation">
-            <div className="mkt-purchase-confirmation-inner">
-                <div className="mkt-purchase-confirmation-message">
-                    Sicuri di voler acquistare questo lotto?
-                </div>
-                <div className="mkt-purchase-confirmation-price">Totale: <span className="price-value">{(item.unitPrice * item.amount).toFixed(2)}</span>z</div>
-                {
-                    error
-                        ? <div className="mkt-purchase-confirmation-error"><b>ERRORE: </b>{error}</div>
-                        : null
-                }
-                <button onClick={() => placeOrder()} className="mkt-username-send">CONFERMA</button>
-                <button onClick={() => props.cancel()} className="mkt-username-cancel">ANNULLA</button>
-            </div>
-        </div>
-    )
-}
-
-function UsernamePrompt(props) {
-
-    const [username, setUsername] = useState(localStorage.getItem("mkt_mc_username") ?? "");
-    const [canSend, setCanSend] = useState(false);
-    const [error, setError] = useState(null);
-
-    const randomString = (length, rs) => {
-        rs += Math.random().toString(20).substr(2, length);
-        if (rs.length > length) return rs.slice(0, length);
-        return randomString(length, rs);
-    };
-
-    useEffect(() => setCanSend(username.trim().length >= 3), [username, setCanSend]);
-
-    const handleChange = e => {
-        setUsername(e.target.value);
-        localStorage.setItem("mkt_mc_username", e.target.value);
-    };
-
-    const sendValidationRequest = async () => {
-        try {
-            const token = randomString(32, "");
-            await fetch(`https://market.forgottenworld.it/api/session/updateToken/${username}/${token}`);
-            props.resetValidationAttempts();
-            props.setToken(token);
-        } catch (e) {
-            setError(e);
-        }
-    }
-
-    return (
-        <div className="mkt-username-prompt">
-            <div className="mkt-username-prompt-inner">
-                <div className="mkt-username-prompt-info">
-                    Per poter accedere al mercato internazionale,
-                    devi convalidare il tuo account Minecraft. Inserisci
-                    il tuo username qui sotto, riceverai un messaggio
-                    di conferma sul server.
-                </div>
-                <input type="text" maxLength={16} className="mkt-username-promp-input" value={username} onChange={handleChange} />
-                {
-                    error
-                        ? <div className="mkt-username-prompt-error"><b>ERRORE: </b>{error}</div>
-                        : null
-                }
-                <button onClick={() => sendValidationRequest()} disabled={!canSend} className="mkt-username-send">CONFERMA</button>
-                {/* <button onClick={() => props.cancel()} className="mkt-username-cancel">ANNULLA</button> */}
-            </div>
-        </div>
-    )
-}
-
-function Item(props) {
-    const item = props.item;
-    const textureEnum = item.minecraftEnum.toLowerCase();
-    const visible = props.needle.every(t => textureEnum.includes(t));
-    return (
-        visible
-            ? <div className="mc-item" onClick={() => props.selectItem(item.minecraftEnum)}>
-                <div className="item-icon"><img alt={item.minecraftEnum} src={textures[textureEnum]} /></div>
-                <div className="item-info">
-                    <div className="item-listings">{item.totalCount}</div>
-                    <div className="item-min-price">{parseFloat(item.minUnitPrice).toFixed(2)}z</div>
-                </div>
-            </div>
-            : null
-    )
-}
-
-function Listing(props) {
-    const item = props.item;
-    const lcName = item.sellerNickname.toLowerCase();
-    const visible = props.needle.every(t => lcName.includes(t));
-    return (
-        visible
-            ? <tr className="listing" onClick={() => props.setBuyingItem(item)}>
-                <td className="seller-face"><img alt="" src={`https://minotar.net/avatar/${item.sellerUuid}/32`} />{item.sellerNickname}</td>
-                <td className="item-count">{item.amount}</td>
-                <td className="price">{item.unitPrice.toFixed(2)}z</td>
-                <td className="total">{(item.unitPrice * item.amount).toFixed(2)}z</td>
-            </tr>
-            : null
-    )
-}
+import { PurchaseConfirmation } from "./PurchaseConfirmation";
+import { UsernamePrompt } from "./UsernamePrompt";
+import { Item } from "./Item";
+import { Listing } from "./Listing";
 
 export default function Market() {
 
@@ -236,7 +112,7 @@ export default function Market() {
                     </div>
                     : null
             }
-            <div className="title">MERCATO INTERNAZIONALE</div>
+            <div className="title">Mercato internazionale</div>
             {
                 currentItem
                     ? <FontAwesomeIcon className="mkt-back-button" icon={faArrowCircleLeft} onClick={() => setCurrentItem(null)} />

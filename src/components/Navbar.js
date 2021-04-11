@@ -11,8 +11,8 @@ export default function Navbar(props) {
 
     return (
         <div className={`navbar bg${props.currentlyOn}`}>
-            <NavLink name="HOME" linkClass={"homelink"} clickAction={() => props.navigate(0)} />
-            <NavLink name="MERCATO INTERNAZIONALE" linkClass={"marketlink"} clickAction={() => props.navigate(1)} />
+            <NavLink name="Home" linkClass={"homelink"} clickAction={() => props.navigate(0)} />
+            <NavLink name="Mercato internazionale" linkClass={"marketlink"} clickAction={() => props.navigate(1)} />
         </div>
     )
 }
