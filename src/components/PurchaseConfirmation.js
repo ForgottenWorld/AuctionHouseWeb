@@ -1,13 +1,17 @@
 import { useState } from "react";
+import { API_URL } from "../consts";
 
 export function PurchaseConfirmation(props) {
 
     const item = props.item;
     const [error, setError] = useState(null);
+    const amount = parseInt(item.amount);
+    const unitPrice = parseFloat(item.unitPrice);
+    const total = (unitPrice * amount).toFixed(2);
 
     const placeOrder = async () => {
         try {
-            const resp = await fetch(`https://market.forgottenworld.it/api/listing/placeOrder/${item.id}/${props.token}`);
+            const resp = await fetch(`${API_URL}/listing/placeOrder/${item.id}/${props.token}`);
             const parsed = await resp.json();
             const status = parsed.status;
             switch (parseInt(status)) {
@@ -29,7 +33,7 @@ export function PurchaseConfirmation(props) {
                 <div className="mkt-purchase-confirmation-message">
                     Sicuri di voler acquistare questo lotto?
                 </div>
-                <div className="mkt-purchase-confirmation-price">Totale: <span className="price-value">{(item.unitPrice * item.amount).toFixed(2)}</span>z</div>
+                <div className="mkt-purchase-confirmation-price">Totale: <span className="price-value">{total}</span>z</div>
                 {error
                     ? <div className="mkt-purchase-confirmation-error"><b>ERRORE: </b>{error}</div>
                     : null}
