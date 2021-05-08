@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { API_URL } from "../consts";
-import { saveToken, saveUsername } from "../storage";
+import { API_URL } from "../Configuration";
+import { saveToken, saveUsername } from "../Storage";
 
 export function UsernamePrompt(props) {
 
-    const [canSend, setCanSend] = useState(false);
+    const [canSend, setCanSend] = useState(props.username.length >= 3);
     const [error, setError] = useState(null);
 
     const randomString = (length, rs) => {

@@ -1,4 +1,4 @@
-import textures from "../texturesBase64.js";
+import textures from "../TexturesBase64.js";
 
 export function Item(props) {
     const item = props.item;

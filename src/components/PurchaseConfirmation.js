@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { API_URL } from "../consts";
+import { API_URL } from "../Configuration";
 
 export function PurchaseConfirmation(props) {
 

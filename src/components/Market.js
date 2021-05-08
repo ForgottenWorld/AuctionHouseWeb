@@ -7,9 +7,10 @@ import { UsernamePrompt } from "./UsernamePrompt";
 import { Item } from "./Item";
 import { Listing } from "./Listing";
 import logo from '../images/logo.png';
-import { WEBSOCKET_API_URL } from "../consts";
-import { loadToken, loadUsername, saveToken } from "../storage";
-import { checkToken, getItemListings, getItemsWithListings } from "../api_methods";
+import { WEBSOCKET_API_URL } from "../Configuration";
+import { loadToken, loadUsername, saveToken } from "../Storage";
+import { getItemListings, getItemsWithListings } from "../ApiBindings";
+import { getListingSorterById } from "../ListingSorters";
 
 
 export default function Market() {
@@ -29,7 +30,10 @@ export default function Market() {
     const webSocket = useRef(null);
 
     useEffect(() => {
-        if (token?.length !== 32 || webSocket.current) return;
+        if (token?.length !== 32) return;
+        if (webSocket.current) {
+            webSocket.current.close();
+        }
         webSocket.current = new WebSocket(WEBSOCKET_API_URL);
         webSocket.current.onopen = (_e) => webSocket.current.send(`HELLO%${token}`);
         webSocket.current.onmessage = (e) => {
@@ -38,23 +42,18 @@ export default function Market() {
                     setListingsChanged(true);
                     break;
                 case "TOKEN_CONFIRMED":
-                    setIsValidated(true);
                     saveToken(token);
+                    setIsValidated(true);
+                    webSocket.current?.send("PING");
+                    break;
+                case "PONG":
+                    setInterval(() => webSocket.current?.send("PING"), 5000);
                     break;
                 default:
                     break;
             }
         };
     }, [token, setIsValidated, setListingsChanged]);
-
-    useEffect(() => {
-        if (isValidated || !token) return;
-        (async () => { 
-            if (await checkToken(token)) {
-                setIsValidated(true);
-            }
-        })();
-    }, [token, isValidated, setIsValidated]);
 
     const changeSortBy = (sortId) => {
         const tmp = [...listings];
@@ -64,24 +63,7 @@ export default function Market() {
             return;
         }
         setSortBy(sortId);
-        let sorter;
-        switch (sortId) {
-            case 1:
-                sorter = (a, b) => a.sellerNickname.localeCompare(b.sellerNickname);
-                break;
-            case 2:
-                sorter = (a, b) => (a.amount - b.amount);
-                break;
-            case 3:
-                sorter = (a, b) => (a.unitPrice - b.unitPrice);
-                break;
-            case 4:
-                sorter = (a, b) => (a.unitPrice * a.amount - b.unitPrice * b.amount);
-                break;
-            default:
-                return;
-        }
-        tmp.sort(sorter);
+        tmp.sort(getListingSorterById(sortId));
         setListings(tmp);
     }
 
@@ -102,7 +84,7 @@ export default function Market() {
             if (listings !== null) setListings(null);
             return;
         }
-        if (listings?.length) return;
+        if (listings?.length && !listingsChanged) return;
         setSearchNeedle("");
         (async () => {
             try {
@@ -117,7 +99,7 @@ export default function Market() {
                 console.log(e);
             }
         })()
-    }, [currentItem, setCurrentItem, listings, setListings, token]);
+    }, [currentItem, setCurrentItem, listings, setListings, token, listingsChanged]);
 
     const handleNeedleChange = (e) => {
         setSearchNeedle(e.target.value)
